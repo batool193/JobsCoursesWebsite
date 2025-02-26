@@ -7,10 +7,11 @@ use Illuminate\Http\Request;
 use App\Services\CourseService;
 use Illuminate\Http\JsonResponse;
 use App\Services\AttachementService;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Course\StoreCourseRequest;
 use App\Http\Requests\Course\UpdateCourseRequest;
-
+use App\Models\Company;
 
 class CourseController extends Controller
 {
@@ -45,7 +46,11 @@ class CourseController extends Controller
      */
     public function show(Course $course): JsonResponse
     {
-        return self::success($course->with('attachements')->get(), 'Course retrieved successfully');
+       $company = Company::find($course->company_id);
+      $logo =  $company->attachements()->get('file_path');
+      $course = $course->load('attachements');
+
+        return self::success(['course' =>$course ,'company_name'=>$company->name,'logo'=>$logo], 'Course retrieved successfully');
     }
 
     /**
@@ -88,4 +93,5 @@ class CourseController extends Controller
         $this->courseservice->deleteAttachement($courseId,$videoId);
          return self::success(null, 'Video deleted successfully');
         }
+
 }

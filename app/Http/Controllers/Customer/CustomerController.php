@@ -47,7 +47,7 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer): JsonResponse
     {
-        return self::success($customer->with('attachements')->get(), 'Customer retrieved successfully');
+        return self::success($customer->load('attachements'), 'Customer retrieved successfully');
     }
 
     /**

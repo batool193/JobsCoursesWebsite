@@ -2,10 +2,11 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use App\Models\Course;
 use App\Models\Company;
 use App\Models\Attachement;
-use App\Models\User;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
@@ -99,13 +100,13 @@ class CourseService
     }
     public function deleteAttachement($courseId,$videoId)
     {
-        $course = Course::findOrFail($courseId);
-        $video = Attachement::where('id', $videoId)->first();
-        $company = User::findOrFail($course->company_id);
-        // Check if the authenticated user is the owner of the company
-        if (Auth::check() && $company->user_id === Auth::id()) {
-                $this->attachmentService->deletePhoto($video);
 
+        $course = Course::findOrFail($courseId);
+       $video = Attachement::where('id', $videoId)->first();
+        $company = Company::findOrFail($course->company_id);
+        // Check if the authenticated user is the owner of the company
+        if (Auth::check() && $company->user_id == Auth::user()->id) {
+            $this->attachmentService->deletePhoto($video);
         }
     }
 

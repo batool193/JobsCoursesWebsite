@@ -13,6 +13,10 @@ class AuthUserService
             throw new AuthenticationException('Invalid credentials provided.');
         }
         $user = auth('api')->user();
+          if($user->getRoleNames()->first()== 'admin')
+          $company = null;
+        else
+               $company = $user->company->id;
         return [
                 'user' => [
                     'id' => $user->id,
@@ -22,11 +26,13 @@ class AuthUserService
                     'created_at' => $user->created_at,
                     'updated_at' => $user->updated_at,
                 ],
-                'type' => $user->getRoleNames(),
+                'type' => $user->getRoleNames()->first(),
+                 'company_id'=>$company,
                 'authorization' => [
                     'token' => $token,
                     'type' => 'bearer',
                 ],
+
         ];
     }
 }

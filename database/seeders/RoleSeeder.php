@@ -7,7 +7,7 @@ namespace Database\Seeders;
     public function run()
     {
         $admin = Role::create(['name' => 'admin', 'guard_name' => 'api']);
-        $admin = Role::create(['name' => 'owner', 'guard_name' => 'api']);
+        $admin = Role::create(['name' => 'company', 'guard_name' => 'api']);
 
     }
 }

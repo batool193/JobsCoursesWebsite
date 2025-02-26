@@ -25,7 +25,7 @@ protected $attachmentService;
      */
     public function getCustomers()
     {
-        return Customer::paginate(10);
+        return Customer::with('attachements')->paginate(10);
     }
 
     /**

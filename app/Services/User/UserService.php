@@ -3,6 +3,7 @@
 namespace App\Services\User;
 
 use App\Models\User;
+use App\Models\Company;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -31,7 +32,8 @@ class UserService
     public function storeUser(array $data): ?User
     {
         $user = User::create($data);
-        $user->assignRole('owner');
+        $company = Company::create(['name'=>$data['name'],'email'=>$data['email'],'user_id'=>$user->id]);
+        $user->assignRole('company');
         return $user;
     }
 

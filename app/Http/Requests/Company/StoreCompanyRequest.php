@@ -27,7 +27,6 @@ class StoreCompanyRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:50', 'regex:/^[a-zA-Z\s]+$/'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:companies,email'],
-            'address' => ['required','string','max:255'],
         ];
     }
 
@@ -41,7 +40,6 @@ class StoreCompanyRequest extends FormRequest
         return [
             'name' => 'Company Name',
             'email' => 'Company Email Address',
-            'address' => 'Company Address',
         ];
     }
 

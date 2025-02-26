@@ -20,12 +20,5 @@ class UserSeeder extends Seeder
         ]);
         $admin->assignRole('admin');
 
-
-        $owner = User::create([
-            'name' => 'owner',
-            'email' => 'owner@gmail.com',
-            'password' => Hash::make('Owner@12345678'),
-        ]);
-        $owner->assignRole('owner');
     }
 }

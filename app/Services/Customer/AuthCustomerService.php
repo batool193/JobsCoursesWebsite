@@ -25,7 +25,7 @@ class AuthCustomerService
 
 
             return [
-                'customer' => $customer,
+                'user' => $customer,
                 'authorisation' => [
                     'token' => $token,
                     'type' => 'bearer',
@@ -44,7 +44,7 @@ class AuthCustomerService
 
         $customer = auth('customer')->user();
         return [
-            'customer' => $customer,
+            'user' => $customer,
             'type' => 'customer',
             'authorization' => [
                 'token' => $token,

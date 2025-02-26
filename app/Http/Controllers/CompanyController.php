@@ -46,7 +46,20 @@ class CompanyController extends Controller
      */
     public function show(Company $company): JsonResponse
     {
-        return self::success($company->with('attachements')->get(), 'Company retrieved successfully');
+        return self::success($company->load('attachements'), 'Company retrieved successfully');
+    }
+     public function showjobs(Company $company): JsonResponse
+    {
+        $logo =  $company->attachements()->get('file_path');
+          $jobs = $company->jobs()->get();
+        return self::success(['jobs' => $jobs,'company name'=>$company->name,'logo'=>$logo], 'Jobs retrieved successfully');
+    }
+      public function showcourses(Company $company): JsonResponse
+    {
+        $logo =  $company->attachements()->get('file_path');
+         $courses = $company->courses()->with('attachements')->get();
+        return self::success(['courses' => $courses,'company name'=>$company->name,'logo'=>$logo], 'Courses retrieved successfully');
+
     }
 
     /**

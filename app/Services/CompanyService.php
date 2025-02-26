@@ -38,7 +38,6 @@ class CompanyService
         $company = Company::create([
             'name' => $data["name"],
             'email' => $data["email"],
-            'address' => $data["address"],
             'user_id' => $user->id,
         ]);
         return $company;

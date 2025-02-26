@@ -30,13 +30,11 @@ Route::prefix('user')->group(function () {
         Route::post('refresh', [AuthUserController::class, 'refresh']);
         Route::get('{user}', [UserController::class, 'show']);
         Route::get('/', [UserController::class, 'index']);
-
-        Route::middleware(['role:owner'])->group(function () {
-            Route::put('{user}', [UserController::class, 'update']);
-            Route::delete('{user}', [UserController::class, 'destroy']);
-        });
+        Route::put('{user}', [UserController::class, 'update']);
+        Route::delete('{user}', [UserController::class, 'destroy']);
 
         Route::middleware(['role:admin'])->group(function () {
+            Route::post('company', [CompanyController::class, 'store']);
             Route::post('/', [UserController::class, 'store']);
             Route::post('{user}/assign-role', [UserController::class, 'assignRoleToUser']);
         });
@@ -56,16 +54,15 @@ Route::prefix('customer')->group(function () {
         Route::post('{customer}/addprofilephoto', [CustomerController::class, 'AddAttachement']);
         Route::post('{customer}/photo/{photo}/remove', [CustomerController::class, 'deleteAttachement']);
         Route::post('{customer}/applyjob', [CustomerController::class, 'AddAttachement']);
+    });
 
-    });
+Route::middleware(['auth:api', 'role:admin'])->group(function () {
+    Route::post('/', [CustomerController::class, 'store']);
 });
-    Route::middleware(['auth:api', 'role:admin'])->group(function () {
-        Route::post('/', [CustomerController::class, 'store']);
-    });
+});
 
 Route::middleware(['auth:api'])->group(function () {
-    Route::middleware(['role:owner'])->group(function () {
-        Route::post('company', [CompanyController::class, 'store']);
+    Route::middleware(['role:company'])->group(function () {
         Route::put('company/{company}', [CompanyController::class, 'update']);
         Route::delete('company/{company}', [CompanyController::class, 'destroy']);
         Route::post('company/{company}/addlogo', [CompanyController::class, 'AddAttachement']);
@@ -86,7 +83,7 @@ Route::middleware(['auth:api'])->group(function () {
         Route::delete('subscriptions/{subscription}', [SubscriptionController::class, 'destroy']);
     });
 
-    Route::prefix('companies')->middleware(['role:owner'])->group(function () {
+    Route::prefix('companies')->middleware(['role:company'])->group(function () {
         Route::post('{company}/subscriptions/{subscription}', [CompanySubscriptionController::class, 'store']);
         Route::delete('{company}/subscriptions/{subscription}', [CompanySubscriptionController::class, 'destroy']);
     });
@@ -96,6 +93,8 @@ Route::get('customer', [CustomerController::class, 'index']);
 Route::get('customer/{customer}', [CustomerController::class, 'show']);
 Route::get('company', [CompanyController::class, 'index']);
 Route::get('company/{company}', [CompanyController::class, 'show']);
+Route::get('company/{company}/showjobs', [CompanyController::class, 'showjobs']);
+Route::get('company/{company}/showcourses', [CompanyController::class, 'showcourses']);
 Route::get('course', [CourseController::class, 'index']);
 Route::get('course/{course}', [CourseController::class, 'show']);
 Route::get('job', [JobController::class, 'index']);
